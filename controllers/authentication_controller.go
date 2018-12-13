@@ -11,8 +11,7 @@ import (
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	requestUser := new(models.User)
 	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&requestUser)
-	models.CheckError(err,w)
+	decoder.Decode(&requestUser)
 
 	//Validating params. Refer models/users.go
 	if _, err := govalidator.ValidateStruct(requestUser); err != nil {
@@ -35,11 +34,10 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 func RefreshTokenHandler(w http.ResponseWriter, r *http.Request) {
 	requestUser := new(models.User)
 	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&requestUser)
-	models.CheckError(err,w)
+	decoder.Decode(&requestUser)
 
 	w.Header().Set("Content-Type","application/json")
-	_,err = w.Write(core.RefreshToken(requestUser))
+	_,err := w.Write(core.RefreshToken(requestUser))
 	models.CheckError(err,w)
 }
 
@@ -54,8 +52,7 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		res := &models.ErrorMessage{err.Error()}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
-		err := json.NewEncoder(w).Encode(res)
-		models.CheckError(err,w)
+		json.NewEncoder(w).Encode(res)
 	} else {
 		//TODO Add code to save users into DB
 
