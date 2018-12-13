@@ -20,7 +20,8 @@ func Login(requestUser *models.User) (int, []byte) {
 		}
 	}
 
-	return http.StatusUnauthorized, []byte("")
+	response, _ := json.Marshal(models.ErrorMessage{"User not found"})
+	return http.StatusUnauthorized, response
 }
 
 //TODO RefreshToken to be optimized
