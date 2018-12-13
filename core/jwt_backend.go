@@ -30,6 +30,7 @@ func InitJWTAuthenticationBackend()  *JWTAuthenticationBackend {
 	return authBackendInstance
 }
 
+//TODO Generating tokeen should be optimized to increase speed
 func (backend *JWTAuthenticationBackend) Generate(id string) (string, error) {
 	token := jwt.New(jwt.SigningMethodRS512)
 	token.Claims = jwt.MapClaims{
@@ -47,11 +48,11 @@ func (backend *JWTAuthenticationBackend) Generate(id string) (string, error) {
 }
 
 func (backend *JWTAuthenticationBackend) Authenticate(user *models.User) bool {
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("1234"),10)
+	//TODO Validation from database should be implemented
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("P@ssw0rd"),10)
 	//test
 
 	testUser := models.User{
-		ID:"1",
 		Username:"tony",
 		Password:string(hashedPassword),
 	}
@@ -59,6 +60,7 @@ func (backend *JWTAuthenticationBackend) Authenticate(user *models.User) bool {
 	return user.Username == testUser.Username && bcrypt.CompareHashAndPassword([]byte(testUser.Password),[]byte(user.Password)) == nil
 }
 
+//TODO Logout func to be coded
 //func (backend *JWTAuthenticationBackend) Logout(tokenString string, token *jwt.Token) error {
 //
 //}

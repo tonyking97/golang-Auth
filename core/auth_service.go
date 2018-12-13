@@ -10,7 +10,8 @@ func Login(requestUser *models.User) (int, []byte) {
 	authBackend := InitJWTAuthenticationBackend()
 
 	if authBackend.Authenticate(requestUser) {
-		token, err := authBackend.Generate(requestUser.ID)
+		id := "12345" //get id from DB
+		token, err := authBackend.Generate(id)
 		if err != nil {
 			return http.StatusInternalServerError, []byte("")
 		} else {
@@ -22,9 +23,11 @@ func Login(requestUser *models.User) (int, []byte) {
 	return http.StatusUnauthorized, []byte("")
 }
 
+//TODO RefreshToken to be optimized
 func RefreshToken(requestUser *models.User) []byte {
+	id := "12345" //get id from DB
 	authBackend := InitJWTAuthenticationBackend()
-	token, err := authBackend.Generate(requestUser.ID)
+	token, err := authBackend.Generate(id)
 	if err != nil {
 		panic(err)
 	}
@@ -35,6 +38,7 @@ func RefreshToken(requestUser *models.User) []byte {
 	return response
 }
 
+//TODO Logout func should be coded
 //func Logout(r *http.Request) error {
 //	authBackend := InitJWTAuthenticationBackend()
 //	tokenRequest, err := request.ParseFromRequest(r, request.OAuth2Extractor, func(token *jwt.Token) (interface{}, error){
